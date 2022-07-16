@@ -11,13 +11,14 @@ class Application {
         //         console.log(item);
         //     });
         // });
-        // sidebar.addEventListener('input', (event) => {
-        //     const target = event.target as HTMLInputElement;
-        //     target.addEventListener('click', (event) => {
-        //         this.onClickEvent(target.name, target.value);
-        //     });
-        //     console.log(target.name, target.value);
-        // });
+
+        sidebar.addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+            target.addEventListener('click', (event) => {
+                this.onClickEvent(target.name, target.value);
+            });
+            console.log(target.name, target.value);
+        });
     }
 
     onClickEvent(key: string, value: string): void {
@@ -42,48 +43,47 @@ class Application {
         document.body.prepend(header);
     }
 
-    createSidebarFilters(): void {
-        const sidebar = document.createElement('div');
-        const container = document.querySelector('main .container');
-        sidebar.classList.add('sidebar');
+    // createSidebarFilters(): void {
+    //     const sidebar = document.createElement('div');
+    //     const container = document.querySelector('main .container');
+    //     sidebar.classList.add('sidebar');
 
-        sidebar.innerHTML = `
+    //     sidebar.innerHTML = `
         
-            <div class="range">
-                <span>1</span>
-                <input type="range">
-                <span>2</span>
-            </div>
+    //         <div class="range">
+    //             <span>1</span>
+    //             <input type="range">
+    //             <span>2</span>
+    //         </div>
         
-            <div>
-                <h4>Бренды</h4>
-                <div id="brands">
-                    <div class="checkbox"><label><input type="checkbox" name="brand" value="Apple"> Apple</label></div>
-                    <div class="checkbox"><label><input type="checkbox" name="brand" value="Samsung"> Samsung</label></div>
-                    <div class="checkbox"><label><input type="checkbox" name="brand" value="Xiaomi"> Xiaomi</label></div>
-                </div>
-            </div>
-            <div>
-                <h4>Цвета</h4>
-                <div id="colors">
-                    <div class="checkbox"><label><input type="checkbox" name="color" value="Черный"> Черный</label></div>
-                    <div class="checkbox"><label><input type="checkbox" name="color" value="Красный"> Красный</label></div>
-                    <div class="checkbox"><label><input type="checkbox" name="color" value="Белый"> Белый</label></div>
-                </div>
-            </div>
-            <div>
-                <h4>Количество камер</h4>
-                <div id="cameras">
-                    <div class="checkbox"><label><input type="checkbox" name="brands[]" value="3"> 3</label></div>
-                    <div class="checkbox"><label><input type="checkbox" name="brands[]" value="2"> 2</label></div>
-                    <div class="checkbox"><label><input type="checkbox" name="brands[]" value="1"> 1</label></div>
-                </div>
-            </div>
-        
-        `;
+    //         <div>
+    //             <h4>Бренды</h4>
+    //             <div id="brands">
+    //                 <div class="checkbox"><label><input type="checkbox" name="brand" value="Apple"> Apple</label></div>
+    //                 <div class="checkbox"><label><input type="checkbox" name="brand" value="Samsung"> Samsung</label></div>
+    //                 <div class="checkbox"><label><input type="checkbox" name="brand" value="Xiaomi"> Xiaomi</label></div>
+    //             </div>
+    //         </div>
+    //         <div>
+    //             <h4>Цвета</h4>
+    //             <div id="colors">
+    //                 <div class="checkbox"><label><input type="checkbox" name="color" value="Черный"> Черный</label></div>
+    //                 <div class="checkbox"><label><input type="checkbox" name="color" value="Красный"> Красный</label></div>
+    //                 <div class="checkbox"><label><input type="checkbox" name="color" value="Белый"> Белый</label></div>
+    //             </div>
+    //         </div>
+    //         <div>
+    //             <h4>Количество камер</h4>
+    //             <div id="cameras">
+    //                 <div class="checkbox"><label><input type="checkbox" name="brands[]" value="3"> 3</label></div>
+    //                 <div class="checkbox"><label><input type="checkbox" name="brands[]" value="2"> 2</label></div>
+    //                 <div class="checkbox"><label><input type="checkbox" name="brands[]" value="1"> 1</label></div>
+    //             </div>
+    //         </div>
+    //     `;
 
-        container?.prepend(sidebar);
-    }
+    //     container?.prepend(sidebar);
+    // }
 
     createFooter() {
         const footer = document.createElement('footer');
@@ -134,7 +134,6 @@ class Application {
     render(data: IDataItem[]): void {
         this.createFooter();
         this.createHeader();
-        this.createSidebarFilters();
         this.renderItems(data);
     }
 }
