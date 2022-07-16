@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Store</title>
+</head>
+<body>
+  
+  <main>
+    <div class="container">
+      <div class="sidebar">
+        <div class="range">
+          <span>1</span>
+          <input type="range">
+          <span>2</span>
+        </div>
+        <div>
+          <h4>Бренды</h4>
+            <div id="brands">
+                <div class="checkbox"><label><input type="checkbox" name="brand" value="Apple"> Apple</label></div>
+                <div class="checkbox"><label><input type="checkbox" name="brand" value="Samsung"> Samsung</label></div>
+                <div class="checkbox"><label><input type="checkbox" name="brand" value="Xiaomi"> Xiaomi</label></div>
+            </div>
+        </div>
+        <div>
+            <h4>Цвета</h4>
+            <div id="colors">
+                <div class="checkbox"><label><input type="checkbox" name="color" value="Черный"> Черный</label></div>
+                <div class="checkbox"><label><input type="checkbox" name="color" value="Красный"> Красный</label></div>
+                <div class="checkbox"><label><input type="checkbox" name="color" value="Белый"> Белый</label></div>
+            </div>
+        </div>
+        <div>
+            <h4>Количество камер</h4>
+            <div id="cameras">
+                <div class="checkbox"><label><input type="checkbox" name="brands[]" value="3"> 3</label></div>
+                <div class="checkbox"><label><input type="checkbox" name="brands[]" value="2"> 2</label></div>
+                <div class="checkbox"><label><input type="checkbox" name="brands[]" value="1"> 1</label></div>
+            </div>
+        </div>
+      </div>
+      
+      <div class="body">
+        <div class="horizontal-filter">
+          <div class="horizontal-filter__wrapper">
+            <div class="custom-select">
+
+              <select>
+                <option value="0">По названию вверх</option>
+                <option value="1">По названию вниз</option>
+                <option value="2">По году вверх</option>
+                <option value="3">По году вниз</option>
+                <option value="4">По количеству вверх</option>
+                <option value="5">По количеству вниз</option>
+              </select>
+
+            </div>
+
+            <div class="searchWrapper">
+              <input class="search" type="text" placeholder="Введите что-нибудь..." autocomplete="off">
+              <span class="clear-button"></span>
+            </div>
+
+            <div class="reset-buttons">
+              <div class="reset-filters">Сброс фильтров</div>
+              <div class="reset">Сброс настроек</div>
+            </div>
+
+          </div>
+          
+        </div>
+        
+        <div class="items">
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
