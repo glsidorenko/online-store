@@ -5,24 +5,18 @@ const checks = document.querySelectorAll('input[type="checkbox"]');
 
 class Application {
     constructor() {
-        // checks.forEach((item) => {
-        //     item.addEventListener('change', (event) => {
-        //         // this.onClickEvent(item.na)
-        //         console.log(item);
-        //     });
-        // });
-
-        sidebar.addEventListener('input', (event) => {
-            const target = event.target as HTMLInputElement;
-            target.addEventListener('click', (event) => {
+        checks.forEach((item) => {
+            item.addEventListener('change', (event) => {
+                const target = event.target as HTMLInputElement;
                 this.onClickEvent(target.name, target.value);
+                console.log(item);
             });
-            console.log(target.name, target.value);
         });
     }
 
     onClickEvent(key: string, value: string): void {
         const filteredData = products.getFilteredData(key, value);
+
         this.renderItems(filteredData);
     }
 
@@ -38,7 +32,7 @@ class Application {
                <div class="backet">
                  <img src="./img/shopping-cart.png" alt="Shopping Cart">
                </div>
-             </div>`;
+        </div>`;
 
         document.body.prepend(header);
     }
@@ -49,13 +43,13 @@ class Application {
     //     sidebar.classList.add('sidebar');
 
     //     sidebar.innerHTML = `
-        
+
     //         <div class="range">
     //             <span>1</span>
     //             <input type="range">
     //             <span>2</span>
     //         </div>
-        
+
     //         <div>
     //             <h4>Бренды</h4>
     //             <div id="brands">
@@ -136,29 +130,56 @@ class Application {
         this.createHeader();
         this.renderItems(data);
     }
+
+    saveFilterRules() {
+        const rules = products.getFilteredRules();
+    }
 }
 
 class Products {
     data: IDataItem[];
     filteredData: IDataItem[];
+    filteredRules: IDataItem[];
 
     constructor(data: IDataItem[]) {
         this.data = data;
         this.filteredData = data;
+        this.filteredRules = [];
+    }
+
+    useFilterRules(filteredRules: IDataItem[]) {
+        let result = this.data;
+
+        filteredRules.forEach(({ key, value }) => {
+            result = this.data.filter((item) => this.filterInner(item, key, value));
+        });
+
+        return result;
+    }
+
+    getFilteredRules() {
+        return this.filteredRules;
     }
 
     getFilteredData(key: string, value: string): IDataItem[] {
-        const result: IDataItem[] = this.filteredData?.filter((elem) => {
-            if (elem[key]) {
-                return elem[key] === value;
-            } else {
-                console.log('no such key', key);
-            }
+        this.filteredRules.push({
+            key,
+            value,
         });
+
+        const result: IDataItem[] = this.filteredData?.filter((item) => this.filterInner(item, key, value));
 
         this.filteredData = result;
 
         return result;
+    }
+
+    filterInner(item: IDataItem, key: string, value: string) {
+        if (item[key]) {
+            return item[key] === value;
+        } else {
+            console.log('no such key', key);
+        }
     }
 }
 
