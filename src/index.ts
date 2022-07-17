@@ -28,7 +28,19 @@ class Application {
             throw new Error('undefined');
         }
 
-        // search.addEventListener('input', this.onClickEvent);
+        search.addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+
+            this.onClickEvent();
+
+            console.log(this);
+        });
+
+        document.querySelector('.clear-button')!.addEventListener('click', () => {
+            // localStorage.removeItem('search');
+            search.value = '';
+            this.onClickEvent();
+        });
     }
 
     public onClickEvent(): void {
