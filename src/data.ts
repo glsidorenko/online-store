@@ -11,7 +11,7 @@ export interface IDataItem {
 
 export const data: IDataItem[] = [
     {
-        num: '1',
+        id: 'e1',
         name: 'Samsung Galaxy S21',
         quantity: '2',
         year: '2019',
@@ -21,7 +21,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '2',
+        id: 'e2',
         name: 'Samsung Galaxy A03',
         quantity: '5',
         year: '2000',
@@ -31,7 +31,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '3',
+        id: 'e3',
         name: 'Samsung Galaxy S20',
         quantity: '3',
         year: '2022',
@@ -41,7 +41,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '4',
+        id: 'e4',
         name: 'Xiaomi Poco X4 pro',
         quantity: '1',
         year: '2014',
@@ -51,7 +51,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '5',
+        id: 'e5',
         name: 'Xiaomi Redmi Note 11',
         quantity: '4',
         year: '2012',
@@ -61,7 +61,7 @@ export const data: IDataItem[] = [
         // favorite: true,
     },
     {
-        num: '6',
+        id: 'e6',
         name: 'Xiaomi Redmi 9C 3/64gb',
         quantity: '6',
         year: '2010',
@@ -71,7 +71,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '7',
+        id: 'e7',
         name: 'Apple iPhone 11',
         quantity: '12',
         year: '2018',
@@ -81,7 +81,7 @@ export const data: IDataItem[] = [
         // favorite: true,
     },
     {
-        num: '8',
+        id: 'e8',
         name: 'Apple iPhone 13',
         quantity: '10',
         year: '2009',
@@ -91,7 +91,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '9',
+        id: 'e9',
         name: 'Apple iPhone 12',
         quantity: '2',
         year: '2010',
@@ -101,7 +101,7 @@ export const data: IDataItem[] = [
         // favorite: false,
     },
     {
-        num: '10',
+        id: 'e10',
         name: 'Apple iPhone SE',
         quantity: '7',
         year: '2004',

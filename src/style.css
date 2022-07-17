@@ -104,10 +104,6 @@ footer {
   text-align: center;
 }
 
-.item:hover {
-  background-color: gray;
-}
-
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -152,4 +148,8 @@ footer {
 
 footer .container {
   justify-content: space-around;
+}
+
+.active {
+  background-color: red;
 }

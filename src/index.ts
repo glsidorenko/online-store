@@ -1,26 +1,61 @@
 import { data, IDataItem } from './data';
+import { LocalStorageUtil } from './localStorageUtil';
 import './style.css';
 
 const checks = document.querySelectorAll('input[type="checkbox"]');
 
 class Application {
+    aciveClass: string;
+    // productsLength: number;
+    // items: NodeList;
+
     constructor() {
+        this.aciveClass = 'active';
+
         checks.forEach((item) => {
-            item.addEventListener('change', (event) => {
+            item.addEventListener('click', (event) => {
                 const target = event.target as HTMLInputElement;
-                this.onClickEvent(target.name, target.value);
+
+                this.onClickEvent();
+
                 console.log(item);
+            });
+        });
+
+        const search = document.querySelector('.search') as HTMLInputElement | null;
+
+        if (!search) {
+            throw new Error('undefined');
+        }
+
+        // search.addEventListener('input', this.onClickEvent);
+    }
+
+    public onClickEvent(): void {
+        this.renderItems(products.filter());
+    }
+
+    clickBasket(): void {
+        const items = document.querySelectorAll('.item');
+
+        items.forEach((item) => {
+            item.addEventListener('click', (event) => {
+                const id = item.getAttribute('data-id');
+                const { isPushed, products } = storage.putProducts(id);
+
+                if (isPushed) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+
+                this.createHeaderCounter(products.length);
+                // console.log(products.length);
             });
         });
     }
 
-    onClickEvent(key: string, value: string): void {
-        const filteredData = products.getFilteredData(key, value);
-
-        this.renderItems(filteredData);
-    }
-
-    createHeader(): void {
+    public createHeader(): void {
         const header = document.createElement('header');
         header.classList.add('header');
 
@@ -30,11 +65,16 @@ class Application {
                </div>
                <h1 class="title">Online Store</h1>
                <div class="backet">
+                 <span>${this.createHeaderCounter(count)}</span>
                  <img src="./img/shopping-cart.png" alt="Shopping Cart">
                </div>
         </div>`;
 
         document.body.prepend(header);
+    }
+
+    public createHeaderCounter(count: number): number {
+        return count;
     }
 
     // createSidebarFilters(): void {
@@ -79,7 +119,7 @@ class Application {
     //     container?.prepend(sidebar);
     // }
 
-    createFooter() {
+    public createFooter() {
         const footer = document.createElement('footer');
 
         footer.innerHTML = `
@@ -96,9 +136,10 @@ class Application {
         document.body.appendChild(footer);
     }
 
-    renderItems(data: IDataItem[]): void {
+    public renderItems(data: IDataItem[]): void {
         const itemsContainer = document.querySelector('.items') as HTMLElement;
         let htmlCatalog = '';
+        const catalog = storage.getProducts();
 
         if (data.length === 0) {
             itemsContainer.innerHTML = 'Nothing to show';
@@ -106,9 +147,16 @@ class Application {
         }
 
         data.forEach((elem: IDataItem) => {
-            // console.log(elem);
+            let activeClass = '';
+
+            if (catalog.indexOf(elem.id) === -1) {
+                // console.log(elem.id);
+            } else {
+                activeClass = ' ' + this.aciveClass;
+            }
+
             htmlCatalog += `
-            <div class="item">
+            <div class="item${activeClass}" data-id="${elem.id}">
                 <h2>${elem.name}</h2>
                 <div class="item-image">
                     <img src=${'./'} alt="${elem.name}">
@@ -116,23 +164,20 @@ class Application {
                 <div class="props">
                     <h3>Количество: ${elem.quantity}</h3>
                     <h3>Год: ${elem.year}</h3>
-                    <h3>Производитель: ${elem.shape}</h3>
+                    <h3>Производитель: ${elem.brand}</h3>
                     <h3>Цвет: ${elem.color}</h3>
                 </div>
             </div>`;
         });
 
         itemsContainer.innerHTML = htmlCatalog;
+        this.clickBasket();
     }
 
-    render(data: IDataItem[]): void {
+    public render(data: IDataItem[]): void {
         this.createFooter();
         this.createHeader();
         this.renderItems(data);
-    }
-
-    saveFilterRules() {
-        const rules = products.getFilteredRules();
     }
 }
 
@@ -147,73 +192,54 @@ class Products {
         this.filteredRules = [];
     }
 
-    useFilterRules(filteredRules: IDataItem[]) {
-        let result = this.data;
+    filter() {
+        const search = document.querySelector('.search') as HTMLInputElement | null;
 
-        filteredRules.forEach(({ key, value }) => {
-            result = this.data.filter((item) => this.filterInner(item, key, value));
-        });
+        const filter = search!.value.toLowerCase();
 
-        return result;
-    }
+        const brands = [...document.querySelectorAll('#brands input:checked')].map(
+            (input) => (input as HTMLInputElement).value
+        );
+        const colors = [...document.querySelectorAll('#colors input:checked')].map(
+            (input) => (input as HTMLInputElement).value
+        );
+        const cameras = [...document.querySelectorAll('#cameras input:checked')].map(
+            (input) => (input as HTMLInputElement).value
+        );
 
-    getFilteredRules() {
-        return this.filteredRules;
-    }
+        console.log(brands, colors, cameras);
 
-    getFilteredData(key: string, value: string): IDataItem[] {
-        this.filteredRules.push({
-            key,
-            value,
-        });
-
-        const result: IDataItem[] = this.filteredData?.filter((item) => this.filterInner(item, key, value));
+        const result = this.data.filter(
+            (elem) =>
+                (!brands.length || brands.includes(elem.brand)) &&
+                (!colors.length || colors.includes(elem.color.toLocaleLowerCase())) &&
+                (!cameras.length || cameras.includes(elem.size)) &&
+                elem.name.toLocaleLowerCase().indexOf(filter) !== -1
+        );
 
         this.filteredData = result;
 
-        return result;
-    }
+        console.log(result);
 
-    filterInner(item: IDataItem, key: string, value: string) {
-        if (item[key]) {
-            return item[key] === value;
-        } else {
-            console.log('no such key', key);
-        }
+        return result;
     }
 }
 
-const sidebar = document.querySelector('#brands') as HTMLElement;
+// const sidebar = document.querySelector('#brands') as HTMLElement;
 
-const App = new Application();
-App.render(data);
-
+const app = new Application();
+const storage = new LocalStorageUtil();
 const products = new Products(data);
+const count = storage.getProducts().length;
 
-// products.getFilteredData('brand', 'Samsung');
+app.render(data);
 
-// function filter() {
-//     // const checkChecked = document.querySelectorAll('input[type="checkbox"]:checked');
-//     const filter = search!.value.toLowerCase();
+// storage.putProducts('products', 'el1');
+// storage.putProducts('el6');
 
-//     const brands = [...sidebar.querySelectorAll('#brands input:checked')].map(
-//         (input) => (input as HTMLInputElement).value
-//     );
-//     const colors = [...sidebar.querySelectorAll('#colors input:checked')].map(
-//         (input) => (input as HTMLInputElement).value
-//     );
-//     const cameras = [...sidebar.querySelectorAll('#cameras input:checked')].map(
-//         (input) => (input as HTMLInputElement).value
-//     );
+// const pr = storage.getProducts();
+// console.log(pr);
 
-//     console.log(brands, colors, cameras);
-
-//     // const newData = data.filter(
-//     //     (elem) =>
-//     //         (!brands.length || brands.includes(elem.shape)) &&
-//     //         (!colors.length || colors.includes(elem.color.toLocaleLowerCase())) &&
-//     //         (!cameras.length || cameras.includes(elem.size)) &&
-//     //         elem.name.toLocaleLowerCase().indexOf(filter) !== -1
-//     // );
-
-// }
+// document.addEventListener('DOMContentLoaded', (e) => {
+//     console.log(10);
+// });
